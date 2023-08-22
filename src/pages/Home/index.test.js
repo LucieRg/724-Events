@@ -1,5 +1,9 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Home from "./index";
+import EventList from "../../containers/Events";
+import PeopleCard from "../../components/PeopleCard";
+import EventCard from "../../components/EventCard";
+import { DataProvider } from "../../contexts/DataContext";
 
 describe("When Form is created", () => {
   it("a list of fields card is displayed", async () => {
@@ -24,21 +28,74 @@ describe("When Form is created", () => {
       await screen.findByText("Message envoyé !");
     });
   });
-
 });
-
 
 describe("When a page is created", () => {
   it("a list of events is displayed", () => {
-    // to implement
-  })
+    render(<EventList />);
+    const eventslist = screen.getByTestId("event-list");
+    expect(eventslist).toBeInTheDocument();
+  });
+
   it("a list a people is displayed", () => {
-    // to implement
-  })
+    const props = {
+      imageSrc: "http://src-image",
+      imageAlt: "image-alt-text",
+      name: "test name",
+      position: "test position",
+    };
+    render(<PeopleCard {...props} />);
+
+    const peoplecard = screen.getByTestId("people-card");
+    expect(peoplecard).toBeInTheDocument();
+  });
+
   it("a footer is displayed", () => {
-    // to implement
-  })
+    render(<Home />);
+    const footer = screen.getByTestId("footer");
+    expect(footer).toBeInTheDocument();
+  });
+
   it("an event card, with the last event, is displayed", () => {
-    // to implement
-  })
+    const props = {
+      imageSrc: "http://src-image",
+      imageAlt: "image-alt-text",
+      date: new Date("2022-04-01"),
+      title: "test event",
+      label: "test label",
+    };
+    render(<EventCard {...props} />);
+    const lastEventCard = screen.getByTestId("card-testid");
+    expect(lastEventCard).toBeInTheDocument();
+  });
+});
+
+describe("Home Page", () => {
+  it("displays success message after submitting the form", async () => {
+    const mockData = {
+      events: [
+        {
+          title: "Événement 1",
+          date: "2023-08-23",
+        },
+      ],
+    };
+
+    // Rendu du composant Home avec le contexte de données fictives
+    render(
+      <DataProvider data={mockData}>
+        <Home />
+      </DataProvider>
+    );
+
+    // Simule un clic sur le bouton d'envoi du formulaire
+    const submitButton = screen.getByRole("button", { name: /envoyer/i });
+    fireEvent.click(submitButton);
+
+    // Attends que le message de succès s'affiche
+    await waitFor(() => {
+      const successMessage = screen.getByText("Message envoyé !");
+      expect(successMessage).toBeInTheDocument();
+    });
+  });
 });
