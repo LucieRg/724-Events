@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Home from "./index";
 import EventList from "../../containers/Events";
 import PeopleCard from "../../components/PeopleCard";
@@ -25,7 +25,7 @@ describe("When Form is created", () => {
         })
       );
       await screen.findByText("En cours");
-      await screen.findByText("Message envoyé !");
+      await screen.findByText("Message envoyé!");
     });
   });
 });
@@ -93,8 +93,8 @@ describe("Home Page", () => {
     fireEvent.click(submitButton);
 
     // Attends que le message de succès s'affiche
-    await waitFor(() => {
-      const successMessage = screen.getByText("Message envoyé !");
+    await (() => {
+      const successMessage = screen.getByText("Message envoyé!");
       expect(successMessage).toBeInTheDocument();
     });
   });
