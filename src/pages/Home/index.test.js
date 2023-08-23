@@ -99,3 +99,23 @@ describe("Home Page", () => {
     });
   });
 });
+
+describe("Page Component", () => {
+  it("renders without errors", () => {
+    render(<Home />);
+    // Vérifie que le composant rend sans erreurs
+  });
+
+  it("renders footer information correctly", () => {
+    render(<Home />);
+    const address = screen.getByText(
+      /45 avenue de la République, 75000 Paris/i
+    );
+    const phoneNumber = screen.getByText(/01 23 45 67 89/i);
+    const email = screen.getByText(/contact@77events.com/i);
+
+    expect(address).toBeInTheDocument();
+    expect(phoneNumber).toBeInTheDocument();
+    expect(email).toBeInTheDocument();
+  });
+});
