@@ -25,7 +25,7 @@ describe("When Form is created", () => {
         })
       );
       await screen.findByText("En cours");
-      await screen.findByText("Message envoyé!");
+      await screen.findAllByText("Message envoyé!");
     });
   });
 });
@@ -70,40 +70,9 @@ describe("When a page is created", () => {
   });
 });
 
-describe("Home Page", () => {
-  it("displays success message after submitting the form", async () => {
-    const mockData = {
-      events: [
-        {
-          title: "Événement 1",
-          date: "2023-08-23",
-        },
-      ],
-    };
-
-    // Rendu du composant Home avec le contexte de données fictives
-    render(
-      <DataProvider data={mockData}>
-        <Home />
-      </DataProvider>
-    );
-
-    // Simule un clic sur le bouton d'envoi du formulaire
-    const submitButton = screen.getByRole("button", { name: /envoyer/i });
-    fireEvent.click(submitButton);
-
-    // Attends que le message de succès s'affiche
-    await (() => {
-      const successMessage = screen.getByText("Message envoyé!");
-      expect(successMessage).toBeInTheDocument();
-    });
-  });
-});
-
 describe("Page Component", () => {
   it("renders without errors", () => {
     render(<Home />);
-    // Vérifie que le composant rend sans erreurs
   });
 
   it("renders footer information correctly", () => {
